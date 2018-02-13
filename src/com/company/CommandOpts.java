@@ -2,27 +2,27 @@ package com.company;
 
 public class CommandOpts {
 
-    public int maxguesses;
-    public int maxhints;
+    public int maximumNumberOfGuesses;
+    public int maximumNumberOfHints;
 
-    String wordsource;
+    String wordSource;
 
     CommandOpts(String[] args) {
-        maxguesses = 10;
-        maxhints = 2;
+        maximumNumberOfGuesses = 10;
+        maximumNumberOfHints = 2;
 
-        wordsource = "";
+        wordSource = "";
 
         for(int i = 0; i < args.length; ++i) {
             if (args[i].equals("--guesses")) {
-                maxguesses = Integer.parseInt(args[i+1]);
+                maximumNumberOfGuesses = Integer.parseInt(args[i+1]);
                 i++;
             }
             else if (args[i].equals("--hints")) {
-                maxhints = Integer.parseInt(args[i+1]);
+                maximumNumberOfHints = Integer.parseInt(args[i+1]);
                 i++;
             }
-            else wordsource = args[i];
+            else wordSource = args[i];
         }
     }
 }

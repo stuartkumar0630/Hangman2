@@ -4,36 +4,37 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameState {
-    public String word;
-    public int g;
-    public int wrong;
-    public int h;
 
-    ArrayList<Character> got;
-    ArrayList<Character> not;
+    public String targetWord;
+    public int numberOfGuessesTaken;
+    public int guessesRemaining;
+    public int numberOfHintsRemaining;
+
+    ArrayList<Character> targetCharactersRemaining;
+    ArrayList<Character> targetCharactersMissing;
 
     public Scanner sc = new Scanner(System.in).useDelimiter("\n");
 
     public GameState(String target, int g, int h) {
-        this.word = target;
-        not = new ArrayList<Character>();
-        got = new ArrayList<Character>();
+        this.targetWord = target;
+        targetCharactersMissing = new ArrayList<Character>();
+        targetCharactersRemaining = new ArrayList<Character>();
 
         for(int i = 0; i < target.length(); ++i) {
-            if (!not.contains(Character.toLowerCase(target.charAt(i))))
-                not.add(Character.toLowerCase(target.charAt(i)));
+            if (!targetCharactersMissing.contains(Character.toLowerCase(target.charAt(i))))
+                targetCharactersMissing.add(Character.toLowerCase(target.charAt(i)));
         }
         //System.out.println(missing);
 
-        this.g = 0;
-        wrong = g;
-        this.h = h;
+        this.numberOfGuessesTaken = 0;
+        this.guessesRemaining = g;
+        this.numberOfHintsRemaining = h;
     }
 
     void showWord() {
-        for (int i = 0; i < word.length(); ++i) {
-            if (got.contains(word.charAt(i))) {
-                System.out.print(word.charAt(i));
+        for (int i = 0; i < targetWord.length(); ++i) {
+            if (targetCharactersRemaining.contains(targetWord.charAt(i))) {
+                System.out.print(targetWord.charAt(i));
             } else {
                 System.out.print("-");
             }
@@ -51,8 +52,8 @@ public class GameState {
         String str = sc.next().toLowerCase();
 
         if (str.length() > 1) {
-            if (str==word) {
-                not.clear();
+            if (str==targetWord) {
+                targetCharactersMissing.clear();
                 return true;
             } else return false;
         }
@@ -64,34 +65,41 @@ public class GameState {
             return false;
         }
 
-        for(i = 0; i < not.size(); ++i) { // Loop over the not got
-            if (not.get(i) == letter) {
-                not.remove(i);
-                got.add(letter);
-                g++;
+        for(i = 0; i < targetCharactersMissing.size(); ++i) { // Loop over the not got
+            if (targetCharactersMissing.get(i) == letter) {
+                targetCharactersMissing.remove(i);
+                targetCharactersRemaining.add(letter);
+                numberOfGuessesTaken++;
                 return true;
             }
         }
 
-        g++; // One more guess
-        wrong--;
+        numberOfGuessesTaken++; // One more guess
+        guessesRemaining--;
         return false;
     }
 
     boolean won() {
-        if (not.size() == 0) return true; else return false;
+
+        if (targetCharactersMissing.size() == 0)
+            return true;
+        else
+            return false;
     }
 
     boolean lost() {
-        if (not.size() > 0 && wrong == 0) return true; else return false;
+
+        if (targetCharactersMissing.size() > 0 && guessesRemaining == 0)
+            return true;
+        else return false;
     }
 
     void hint() {
-        if (h == 0) {
+        if (numberOfHintsRemaining == 0) {
             System.out.println("No more hints allowed");
         }
 
         System.out.print("Try: ");
-        System.out.println(not.get((int)(Math.random()*not.size())));
+        System.out.println(targetCharactersMissing.get((int)(Math.random()*targetCharactersMissing.size())));
     }
 }
