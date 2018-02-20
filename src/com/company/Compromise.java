@@ -42,26 +42,15 @@ public class Compromise {
         if (done(won, lost) == false){
 
             System.out.println("Please guess a letter");
-
             String letter = userResponseToInstructions();
 
-            if (hint(letter)){
-
-                if (lengthOfRemainingWord(word, workingCopy) < maxMistakes - mistakes){
-                    System.out.println(" No more hints remaning");
-                }
-                else{
-                    String hintLetter = getHint(word, workingCopy, 0);
-                    System.out.println("Hint: The word contains the letter " + hintLetter);
-                }
-
-                guess(word, workingCopy, mistakes);
+            if (isHint(letter)){
+                showHint(word, workingCopy);
+                letter = userResponseToInstructions();
             }
 
             String workingCop = applyGuess(word, workingCopy, letter, 0);
-
             int mistak = updateMistakes(mistakes, workingCopy, workingCop);
-
 
             display(word, workingCop, mistak, letter, maxMistakes);
             guess(word, workingCop, mistak);
@@ -91,11 +80,11 @@ public class Compromise {
 
         switch (response){
             case "1":
-                return WordSource.CITIES;
+                return WordSource.COUNTIES;
             case "2":
-                return WordSource.COUNTIES;
+                return WordSource.COUNTRIES;
             case "3":
-                return WordSource.COUNTIES;
+                return WordSource.CITIES;
             default:
                 System.out.println("Please select one of the below options by entering 1, 2, or 3");
                 return categoryFromResponse();
@@ -107,14 +96,13 @@ public class Compromise {
     static void display(String word, String workingCopy, int mistakes, String letter, int maxMistakes){
 
         boolean won = won(word, workingCopy);
+        boolean lost = lost(mistakes, maxMistakes);
+
 
         if (won){
             System.out.println("You won");
         }
-
-        boolean lost = lost(mistakes, maxMistakes);
-
-        if (lost){
+        else if (lost){
             System.out.println("You lost");
             System.out.print("The answer was " + word);
         }else {
@@ -207,7 +195,7 @@ public class Compromise {
         return array[rnd];
     }
 
-    static boolean hint(String response){
+    static boolean isHint(String response){
 
         if (response.charAt(0) == '?') {
             return true;
@@ -231,6 +219,18 @@ public class Compromise {
         }
 
         return hintLetter;
+    }
+
+
+    static void showHint(String word, String workingCopy){
+
+        if (lengthOfRemainingWord(word, workingCopy) < 3){
+            System.out.println(" No more hints remaining");
+        }
+        else{
+            String hintLetter = getHint(word, workingCopy, 0);
+            System.out.println("Hint: The word contains the letter " + hintLetter);
+        }
     }
 
 }
