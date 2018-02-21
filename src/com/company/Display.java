@@ -1,10 +1,9 @@
 package com.company;
 
 
- class Display implements ViewDelegate {
+class Display implements ViewDelegate {
 
     static ViewDatasource viewDatasource;
-
     Display (final ViewDatasource vd){
         this.viewDatasource = vd;
     }
@@ -28,28 +27,21 @@ package com.company;
         }
     }
 
-    public void display(final String word, final String workingCopy, final int mistakes, final String letter, final int maxMistakes){
-
-        final boolean won = viewDatasource.won(word, workingCopy);
-        final boolean lost = viewDatasource.lost(mistakes, maxMistakes);
-
-
-        if (won){
-            System.out.println("You won");
-        }
-        else if (lost){
-            System.out.println("You lost");
-            System.out.print("The answer was " + word);
-        }else {
-            System.out.println("You have made " + mistakes + " mistakes so far");
-            System.out.println("You tried (" + letter + ")");
-            System.out.println(workingCopy);
-
-
-        }
-
-        System.out.print(System.lineSeparator());
+    public void displayWon(){
+        System.out.println("You won");
     }
+
+    public void displayLost(final String word){
+        System.out.println("You lost");
+        System.out.print("The answer was " + word);
+    }
+
+    public void displayEndOfRound(final int mistakes, final String letter, final String workingCopy){
+        System.out.println("You have made " + mistakes + " mistakes so far");
+        System.out.println("You tried (" + letter + ")");
+        System.out.println(workingCopy);
+    }
+
 
     public void showStartOfRoundInstructions(){
         System.out.println("Please guess a letter");

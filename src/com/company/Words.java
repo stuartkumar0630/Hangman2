@@ -3,7 +3,7 @@ package com.company;
 import java.io.*;
 import java.util.ArrayList;
 
- class Words {
+class Words {
 
     private static String[] counties = { "Argyll and Bute", "Caithness",  "Kingdom of Fife",
             "East Lothian", "Highland", "Dumfries and Galloway",

@@ -1,23 +1,31 @@
 package com.company;
 
-
-
 import java.util.Scanner;
-
 import static java.lang.StrictMath.max;
 
 public class Controller implements ViewDatasource {
 
+    // Response for handling view related activity
     private static ViewDelegate viewDelegate;
+    // Responsible for sourcing words to be guessed
     final WordDatasource wordDatasource = new DefaultWordsource();;
 
     Controller(){
 
     }
 
+    /**
+     *
+     * Starts game
+     *
+     * Displays start of game instructions and asks user to chose category, then starts the guessing
+     * Also displays end of round status
+     *
+     */
+
     public void play(){
 
-        viewDelegate = new Display(this);
+        viewDelegate = new FrameDisplay(this);
 
         viewDelegate.showStartOfGameInstructions();
 
@@ -27,6 +35,16 @@ public class Controller implements ViewDatasource {
         guess(word, wordDatasource.startingWorkingWord("-", word.length()), 0);
 
     }
+
+    /**
+     * Main game loop
+     *
+     * Asks user for response, processes response, and recurse
+     *
+     * @param word
+     * @param workingCopy
+     * @param mistakes
+     */
 
      void guess(final String word, String workingCopy, final int mistakes){
 
@@ -47,15 +65,29 @@ public class Controller implements ViewDatasource {
                 letter = userResponseToInstructions();
             }
 
-            final String workingCop = applyGuess(word, workingCopy, letter, 0);
-            final int mistak = updateMistakes(mistakes, workingCopy, workingCop);
+            final String newWorkingCopy = applyGuess(word, workingCopy, letter, 0);
+            final int newMistakes = updateMistakes(mistakes, workingCopy, newWorkingCopy);
 
-            viewDelegate.display(word, workingCop, mistak, letter, maxMistakes);
-            guess(word, workingCop, mistak);
+            displayGameStateToUser(word, newMistakes, letter, workingCopy, maxMistakes);
+            guess(word, newWorkingCopy, newMistakes);
 
         }
 
+
+
     }
+
+    /**
+     * Applies guess to working copy and returns a new working copy
+     *
+     * E.g (word: banana, workingCopy: b----, letter: a, position: 0) -> ba-a-a
+     *
+     * @param word
+     * @param workingCopy
+     * @param letter
+     * @param position
+     * @return
+     */
 
      String applyGuess(final String word, final String workingCopy, final String letter, final int position){
 
@@ -72,6 +104,21 @@ public class Controller implements ViewDatasource {
         return workingCopy;
     }
 
+    // Self documenting functions
+
+    void displayGameStateToUser(String word, int mistakes, String letter, String workingCopy, int maxMistakes){
+
+        final boolean won = won(word, workingCopy);
+        final boolean lost = lost(mistakes, maxMistakes);
+
+        if (won){
+            viewDelegate.displayWon();
+        }else if (lost){
+            viewDelegate.displayLost(word);
+        }else {
+            viewDelegate.displayEndOfRound(mistakes, letter, workingCopy);
+        }
+    }
 
     String userResponseToInstructions() {
 
@@ -98,8 +145,6 @@ public class Controller implements ViewDatasource {
         return hintLetter;
     }
 
-    // Self documenting functions
-
     int updateMistakes(final int mistakes, final String oldWorkingCopy, final String newWorkingCopy){
 
         if (oldWorkingCopy.equals(newWorkingCopy)){
@@ -115,15 +160,13 @@ public class Controller implements ViewDatasource {
         return word.length() - guessedWord.length();
     }
 
-    public boolean done(final boolean won, final boolean lost){
-        return won || lost;
-    }
+    boolean done(final boolean won, final boolean lost){ return won || lost; }
 
-    public boolean lost(final int mistakes, final int maxMistakes) {
+    boolean lost(final int mistakes, final int maxMistakes) {
         return mistakes > maxMistakes;
     }
 
-    public boolean won(final String word, final String workingCopy){
+    boolean won(final String word, final String workingCopy){
         return word.equals(workingCopy);
     }
 

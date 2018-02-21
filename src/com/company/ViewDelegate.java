@@ -1,8 +1,12 @@
 package com.company;
 
 interface ViewDelegate{
+
     void showStartOfGameInstructions();
     void showHint(String word, String workingCopy);
-    void display(String word, String workingCopy, int mistakes, String letter, int maxMistakes);
     void showStartOfRoundInstructions();
+
+    void displayWon();
+    void displayLost(String word);
+    void displayEndOfRound(final int mistakes, final String letter, final String workingCopy);
 }

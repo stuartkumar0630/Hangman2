@@ -19,6 +19,13 @@ class  DefaultWordsource implements WordDatasource {
             "Stirling", "Inverness", "Aberdeen",
             "Falkirk" };
 
+
+    public String wordFromResponse(final String response) {
+        final WordSource category = categoryFromResponse(response);
+        final String word = wordFromCategory(category);
+        return word;
+    }
+
     public String wordFromCategory(final WordSource category) {
 
         switch (category){
@@ -33,14 +40,6 @@ class  DefaultWordsource implements WordDatasource {
         }
     }
 
-    public String wordFromResponse(final String response) {
-        final WordSource category = categoryFromResponse(response);
-        final String word = wordFromCategory(category);
-        return word;
-    }
-
-
-    // TODO: Add delegate
 
     public WordSource categoryFromResponse(final String response){
 
