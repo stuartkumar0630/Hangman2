@@ -1,17 +1,11 @@
 package com.company;
 
-interface ViewDatasource{
-    int lengthOfRemainingWord(String word, String workingCopy);
-    String getHint(String word, String workingCopy, int position);
-    boolean lost(int mistakes, int maxMistakes);
-    boolean won(String word, String workingCopy);
-}
 
  class Display implements ViewDelegate {
 
     static ViewDatasource viewDatasource;
 
-    Display (ViewDatasource vd){
+    Display (final ViewDatasource vd){
         this.viewDatasource = vd;
     }
 
@@ -23,21 +17,21 @@ interface ViewDatasource{
         System.out.println("Pick a category:");
     }
 
-    public void showHint(String word, String workingCopy){
+    public void showHint(final String word, final String workingCopy){
 
         if (viewDatasource.lengthOfRemainingWord(word, workingCopy) < 3){
             System.out.println(" No more hints remaining");
         }
         else{
-            String hintLetter = viewDatasource.getHint(word, workingCopy, 0);
+            final String hintLetter = viewDatasource.getHint(word, workingCopy, 0);
             System.out.println("Hint: The word contains the letter " + hintLetter);
         }
     }
 
-    public void display(String word, String workingCopy, int mistakes, String letter, int maxMistakes){
+    public void display(final String word, final String workingCopy, final int mistakes, final String letter, final int maxMistakes){
 
-        boolean won = viewDatasource.won(word, workingCopy);
-        boolean lost = viewDatasource.lost(mistakes, maxMistakes);
+        final boolean won = viewDatasource.won(word, workingCopy);
+        final boolean lost = viewDatasource.lost(mistakes, maxMistakes);
 
 
         if (won){
@@ -47,7 +41,7 @@ interface ViewDatasource{
             System.out.println("You lost");
             System.out.print("The answer was " + word);
         }else {
-            System.out.println("You have made " + String.valueOf(mistakes) + " mistakes so far");
+            System.out.println("You have made " + mistakes + " mistakes so far");
             System.out.println("You tried (" + letter + ")");
             System.out.println(workingCopy);
 

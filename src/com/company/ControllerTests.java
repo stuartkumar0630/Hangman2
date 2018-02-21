@@ -4,49 +4,49 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class Tests {
+public class ControllerTests {
 
     @Test
     public void doneTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         //assertEquals(comp.applyGuess("-anana", "-anana", "b"), "banana");
         assertEquals(comp.done(true, true), true);
     }
 
     @Test
     public void lostTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         assertEquals(comp.lost(10, 5), true);
     }
 
     @Test
     public void wonTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         assertEquals(comp.won("yellow", "yellow"), true);
     }
 
     @Test
     public void updateMistakesTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         assertEquals(comp.updateMistakes(6, "yellow", "yellow"), 7);
     }
 
     @Test
     public void applyGuessTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         assertEquals(comp.applyGuess("banana", "-anana", "b", 0), "banana");
     }
 
     @Test
     public void isHintTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         assertEquals(comp.isHint("?"), true);
         assertEquals(comp.isHint("j"), false);
     }
 
     @Test
     public void lengthOfRemainingWordTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         assertEquals(comp.lengthOfRemainingWord("hello", "hello"), 0);
         assertEquals(comp.lengthOfRemainingWord("hello", "-ello"), 1);
         assertEquals(comp.lengthOfRemainingWord("hello", "hell-"), 1);
@@ -58,7 +58,7 @@ public class Tests {
 
     @Test
     public void getHintTest(){
-        Compromise comp = new Compromise();
+        final Controller comp = new Controller();
         assertEquals(comp.getHint("idru", "-dru", 0), "i");
     }
 }
